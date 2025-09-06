@@ -1,7 +1,7 @@
 body {
   margin: 0;
   background-size: 180% 180%;
-  background: url("ktx.png");
+  background: url("../images/ktx.png");
   background-size: cover;
   background-color: rgba(0,0,0,0.1);
   background-blend-mode: darken;
