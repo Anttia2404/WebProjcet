@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  background-size: 180% 180%;
+  background: url("ktx.png");
+  background-size: cover;
+  background-color: rgba(0,0,0,0.1);
+  background-blend-mode: darken;
+}
+
+.gardian-background {
+  width: 100vw;                      
+  height: 450px;                      
+  background-size: cover;             
+  display: flex;
+  justify-content: center;            
+               
+}
+
+.container {
+  background: linear-gradient(300deg, #b5e3f9, #dbe6f7, #ffffff);
+  border-radius: 12px;
+  width: 500px;
+}
+
