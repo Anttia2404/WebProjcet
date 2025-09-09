@@ -12,3 +12,52 @@
   background-color: #0d6efd; 
   color: white;              
 }
+
+.title_chat {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 70px;
+  margin-bottom: 40px;
+  font-family: 'Arial', sans-serif;
+  color: #13c2d5;
+}
+.container[role = "sidebar"] {
+  max-width: 1200px; 
+  margin: 0 auto;    
+  padding: 20px;     
+  width: 200px;
+  height: 100vh;
+}
+
+.search-box input[type="search_ai"] {
+  width: 170%;
+  padding: 8px 12px;
+  margin-left: -120px;
+  border: 2px solid #0d65b8;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.search-box button {
+  padding: 8px 16px;
+  margin-right: -120px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  height: 80px;
+}
+
+.border {
+  background-color: #ffffff;
+  margin-left: 70px;
+  margin-right: 70px;
+}
