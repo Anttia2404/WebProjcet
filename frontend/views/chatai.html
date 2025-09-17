@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="assets/style/ui_ai.css">
     <link rel="stylesheet" href="assets/style/chatbot.css">
-    <link rel="stylesheet" href="components/sidebar.html">
     
     <title>Chat AI</title>
 </head>
@@ -25,42 +24,48 @@
                 <!-- Tin nhắn sẽ xuất hiện ở đây -->
                 <div class="message user-message">
                     <div class="message-content">Xin chào! Tôi có thể giúp gì cho bạn hôm nay?</div>
+                </div>
             </div>
             <form id="chat-form" class="search-box mx-auto d-flex" style="max-width: 400px;">
-                <input id="chat-input" type="text" class="form-control me-2" placeholder="Nhập ở đây ✎" aria-label="Nhập tin nhắn">
+                <input id="chat-input" type="text" class="form-control me-2" placeholder="Nhập ở đây nè ✎" aria-label="Nhập tin nhắn">
                 <button id="send-button" type="submit">➤</button>
             </form>
         </main>
-        <!-- Chatbot Popup -->
-        <div class="chatbot-popup">
-            <div class="chat-header">
-                <div class="header-info">
-                    <img src="assets/images/chatbot.png" alt="Chatbot Logo" class="logo">
-                    <h2 class="logo-text">Chatbot</h2>
-                    <button class="material-symbols-outlined">
-                        keyboard_arrow_down
-                    </button>
+        <div class="chatbot-container">
+            <!-- Chatbot Popup -->
+            <div class="chatbot-popup">
+                <div class="chat-header">
+                    <div class="header-info">
+                        <img src="assets/images/chatbot.png" alt="Chatbot Logo" class="logo">
+                        <h2 class="logo-text">Chatbot</h2>
+                        <button class="material-symbols-outlined">
+                            keyboard_arrow_down
+                        </button>
+                    </div>
+                </div>
+                 <!-- ChatBot body -->
+                <div class="chat-body">
+                    <div class="message bot-message">
+                        <img src="assets/images/chatbot.png" alt="Chatbot Logo" class="bot-logo">
+                        <p class="message-content">Xin chào! Tôi có thể giúp gì cho bạn?</p>
+                    </div>
+                    <div class="message user-message">
+                        <p class="message-content">Xin chào! Tôi là người dùng.</p>
+                    </div>
+                </div>
+
+                <div class="chat-footer">
+                    <form action="#" class="d-flex">
+                        <input type="text" class="form-control" placeholder="Nhập ở đây ✎"> 
+                        
+                        <button class="material-symbols-outlined">
+                            keyboard_arrow_up
+                        </button>
+                    </form>
                 </div>
             </div>
-        </div>
-
-        <!-- ChatBot body -->
-        <div class="chat-body">
-            <div class="message bot-message">
-                <img src="assets/images/chatbot.png" alt="Chatbot Logo" class="bot-logo">
-                <div class="message-content">Xin chào! Tôi có thể giúp gì cho bạn
-            </div>
-            <div class="message user-message">
-                <div class="message-content">Xin chào! Tôi có thể giúp gì cho bạn hôm nay?</div>
-            </div>
-        </div>
-
-        <div class="chat-footer">
-            <form action="#" class="d-flex">
-                <input type="text" class="form-control" placeholder="Nhập ở đây ✎">
-                <button class="material-symbols-outlined">
-                    keyboard_arrow_up
-                </button>
+            
+           
         </div>
     </div>
     
