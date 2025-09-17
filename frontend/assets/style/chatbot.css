@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Monsieur+La+Doulaise&display=swap');
+
+.header-info .logo {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+.header-info .logo-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #13c2d5;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+    cursor: pointer;
+    color: #13c2d5;
+}
