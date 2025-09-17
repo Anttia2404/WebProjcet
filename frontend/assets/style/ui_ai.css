@@ -1,63 +1,92 @@
-.search-box {
-  width: 600px; 
-  margin-right: 16px; 
+/* Nav */
+.nav .nav-link {
+  color: #000;
+  background-color: #fff;
+}
+.nav .nav-link:hover {
+  background-color: #0d6efd;
+  color: #fff;
 }
 
-.nav-link {
-  color: black;          
-  background-color: white; 
-}
-
-.nav-link:hover {
-  background-color: #0d6efd; 
-  color: white;              
-}
-
+/* Title */
 .title_chat {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
   margin-top: 70px;
   margin-bottom: 40px;
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   color: #13c2d5;
 }
-.container[role = "sidebar"] {
-  max-width: 1200px; 
-  margin: 0 auto;    
-  padding: 20px;     
-  width: 200px;
-  height: 100vh;
+
+/* Layout container */
+.container {
+  display: flex;
+  min-height: 100vh; /* cho layout full height nếu cần */
+  box-sizing: border-box;
 }
 
-.search-box input[type="search_ai"] {
-  width: 170%;
+
+
+/* Main (bên phải) - phải là flex column để chat-box co giãn */
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;               /* tương đương flex-grow:1 */
+  padding: 12px;
+  min-height: 0;         /* quan trọng: cho phép con overflow:auto hoạt động */
+  box-sizing: border-box;
+}
+
+/* Chat box - chiếm không gian còn lại */
+#chat-box {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  flex: 1;               /* sẽ phóng to/thu nhỏ trong main */
+  overflow: auto;
+  min-height: 0;
+  background: #fff;
+}
+
+/* Form tìm kiếm / gửi tin - dùng flex, không dùng width 170% hay margin âm */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 600px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Target input theo class hoặc id - tránh dùng type không hợp lệ */
+.search-box input,
+.search-box input[type="search"],
+#chat-input {
+  flex: 1;
   padding: 8px 12px;
-  margin-left: -120px;
   border: 2px solid #0d65b8;
   border-radius: 4px;
   font-size: 16px;
+  box-sizing: border-box;
 }
-.search-box button {
+
+/* Nút gửi */
+.search-box button,
+#send-button {
   padding: 8px 16px;
-  margin-right: -120px;
   background-color: #0d6efd;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-}
-
-.search-box {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  margin-top: 20px;
-  height: 80px;
+  justify-content: center;
 }
 
-.border {
-  background-color: #ffffff;
-  margin-left: 70px;
-  margin-right: 70px;
+.title_chat{
+  margin-top: 10px;
 }
