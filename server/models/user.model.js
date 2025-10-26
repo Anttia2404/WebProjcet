@@ -24,9 +24,9 @@ export const findUserByEmail = async (email) => {
             SELECT * FROM users WHERE email = $1;
         `;
         const result = await db.query(query, [email]);
-        
-        return result.rows[0]; 
-        
+
+        return result.rows[0];
+
     } catch (err) {
         console.error("Loi khi tim user: ", err);
         throw err;
@@ -37,9 +37,9 @@ export const findOrCreateUser = async ({ googleId, facebookId, email, fullName }
     try {
         const findByIdQuery = `SELECT * FROM users WHERE ${googleId ? 'google_id = $1' : 'facebook_id = $1'};`;
         const findByIdParams = [googleId || facebookId];
-        
+
         let result = await db.query(findByIdQuery, findByIdParams);
-        
+
         if (result.rows[0]) {
             return result.rows[0];
         }
@@ -51,14 +51,14 @@ export const findOrCreateUser = async ({ googleId, facebookId, email, fullName }
             if (result.rows[0]) {
                 const existingUser = result.rows[0];
                 const updateQuery = `
-                    UPDATE users 
+                    UPDATE users
                     SET ${googleId ? 'google_id = $1' : 'facebook_id = $1'}
                     WHERE id = $2
                     RETURNING *;
                 `;
                 const updateParams = [googleId || facebookId, existingUser.id];
                 result = await db.query(updateQuery, updateParams);
-                
+
                 return result.rows[0];
             }
         }
@@ -69,7 +69,7 @@ export const findOrCreateUser = async ({ googleId, facebookId, email, fullName }
         `;
         const createParams = [googleId || null, facebookId || null, email, fullName || null];
         result = await db.query(createQuery, createParams);
-        
+
         return result.rows[0];
 
     } catch (err) {
@@ -77,4 +77,3 @@ export const findOrCreateUser = async ({ googleId, facebookId, email, fullName }
         throw err;
     }
 };
-

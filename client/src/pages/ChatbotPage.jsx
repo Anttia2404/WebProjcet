@@ -54,14 +54,8 @@ const ChatbotPage = () => {
 
   // Bước 1: Tải danh sách cuộc trò chuyện khi component được mount
   useEffect(() => {
-    // Bước 1: Tải thông tin người dùng
-    // Trong thực tế: fetch('/api/user/me').then(...)
     setCurrentUser(mockCurrentUser);
-
-    // Bước 2: Tải danh sách cuộc trò chuyện
-    // Trong thực tế, bạn sẽ gọi fetch() API ở đây
-    // Ví dụ: fetch('/api/conversations').then(res => setConversations(res.json()));
-    setConversations(mockConversations); // Dùng dữ liệu mẫu
+    setConversations(mockConversations);
   }, []);
 
   // Hàm xử lý khi người dùng chọn một mục trong sidebar
@@ -70,17 +64,72 @@ const ChatbotPage = () => {
     setCurrentConversationId(conversationId);
   };
 
-  // State cho messages trong cuộc trò chuyện hiện tại (simple client-side)
   const [messages, setMessages] = useState([]);
+  const [history, setHistory] = useState([]);
 
-  const handleSend = (text) => {
+  // gọi server -> Gemini và cập nhật UI
+  const handleSend = async (text) => {
     if (!text || text.trim() === "") return;
-    const newMsg = {
+
+    const trimmed = text.trim();
+
+    // 1) Thêm tin nhắn người dùng vào UI ngay lập tức
+    const userMsg = {
       id: Date.now().toString(),
-      text: text.trim(),
+      text: trimmed,
       from: "user",
     };
-    setMessages((prev) => [...prev, newMsg]);
+    setMessages((prev) => [...prev, userMsg]);
+
+    // 1.5) Thêm placeholder 'typing' của bot để hiển thị animation
+    const typingId = `bot-typing-${Date.now()}`;
+    const typingMsg = {
+      id: typingId,
+      from: "bot",
+      typing: true,
+    };
+    setMessages((prev) => [...prev, typingMsg]);
+
+    // 2) Gọi server để lấy phản hồi từ Gemini
+    try {
+      // lazy-import để tránh vòng phụ thuộc khi chưa có file
+      const { postChatMessage } = await import("../services/api.js");
+
+      const resp = await postChatMessage(trimmed, history);
+
+      if (resp && resp.success) {
+        const botMsg = {
+          id: `bot-${Date.now()}`,
+          text: resp.content || "(Không có phản hồi)",
+          from: "bot",
+        };
+
+        // thay thế placeholder typing bằng phản hồi thực
+        setMessages((prev) =>
+          prev.map((m) => (m.id === typingId ? botMsg : m))
+        );
+
+        // lưu lại history mới để tái sử dụng trong các lần gọi tiếp theo
+        if (resp.updatedHistory) setHistory(resp.updatedHistory);
+      } else {
+        const botErr = {
+          id: `bot-err-${Date.now()}`,
+          text: (resp && resp.error) || "Lỗi khi lấy phản hồi từ server.",
+          from: "bot",
+        };
+        setMessages((prev) =>
+          prev.map((m) => (m.id === typingId ? botErr : m))
+        );
+      }
+    } catch (err) {
+      const botErr = {
+        id: `bot-err-${Date.now()}`,
+        text: "Không thể kết nối tới server chat.",
+        from: "bot",
+      };
+      setMessages((prev) => prev.map((m) => (m.id === typingId ? botErr : m)));
+      console.error(err);
+    }
   };
 
   const handleNewChat = () => {
@@ -106,10 +155,15 @@ const ChatbotPage = () => {
           <Header_Chat />
           <main className={messages.length === 0 ? "main empty" : "main"}>
             {/* Phần hiển thị tin nhắn */}
-            <MessageList messages={messages} />
+            {messages.length > 0 && (
+              <MessageList messages={messages} currentUser={currentUser} />
+            )}
 
             {/* Phần nhập tin nhắn */}
-            <MessageInput onSend={handleSend} />
+            <MessageInput
+              onSend={handleSend}
+              isCentered={messages.length === 0}
+            />
 
             {/* Khi chưa có tin nhắn, hiển thị gợi ý phía dưới input */}
             {messages.length === 0 && (

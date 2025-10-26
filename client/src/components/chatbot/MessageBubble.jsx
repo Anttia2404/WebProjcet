@@ -1,21 +1,46 @@
 import React from "react";
 
-const MessageBubble = ({ sender, content, timestamp }) => {
-  // 1. Xác định người gửi để căn chỉnh và chọn màu nền
+const MessageBubble = ({
+  sender,
+  content,
+  timestamp,
+  isTyping = false,
+  avatarUrl,
+}) => {
   const isUser = sender === "user";
-
-  // 2. Gán class để CSS xử lý căn chỉnh và màu sắc
   const bubbleClass = isUser ? "message-user" : "message-bot";
   const alignmentClass = isUser ? "justify-end" : "justify-start";
 
   return (
-    // message-row: Dùng Flexbox để căn chỉnh toàn bộ bong bóng tin nhắn qua trái/phải
     <div className={`message-row ${alignmentClass}`}>
-      {/* message-bubble: Phần chứa nội dung và màu nền */}
-      <div className={`message-bubble ${bubbleClass}`}>
-        <p className="message-content">{content}</p>
+      {/* Avatar bên trái cho bot */}
+      {!isUser && (
+        <div className="message-avatar">
+          <img src={avatarUrl || "/robot.png"} alt="AI" />
+        </div>
+      )}
+
+      <div
+        className={`message-bubble ${bubbleClass} ${isTyping ? "typing" : ""}`}
+      >
+        {isTyping ? (
+          <div className="typing-dots" aria-hidden>
+            <span />
+            <span />
+            <span />
+          </div>
+        ) : (
+          <p className="message-content">{content}</p>
+        )}
         <span className="message-timestamp">{timestamp}</span>
       </div>
+
+      {/* Avatar bên phải cho user (nếu có) */}
+      {isUser && (
+        <div className="message-avatar message-avatar-right">
+          <img src={avatarUrl || "/robot.png"} alt="You" />
+        </div>
+      )}
     </div>
   );
 };

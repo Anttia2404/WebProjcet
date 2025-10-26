@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import MessageBubble from "./MessageBubble";
 
-const MessageList = ({ conversationId, messages = [] }) => {
+const MessageList = ({ conversationId, messages = [], currentUser = null }) => {
   // Use only the messages prop; if empty, we'll show the empty placeholder
   const msgs = messages;
 
@@ -37,6 +37,14 @@ const MessageList = ({ conversationId, messages = [] }) => {
           sender={message.sender || (message.from === "user" ? "user" : "bot")}
           content={message.content || message.text}
           timestamp={message.timestamp}
+          isTyping={!!message.typing}
+          avatarUrl={
+            message.from === "user"
+              ? currentUser && currentUser.avatarUrl
+                ? currentUser.avatarUrl
+                : "/robot.png"
+              : "/robot.png"
+          }
         />
       ))}
       {/* Phần tử rỗng dùng để cuộn xuống cuối cùng */}
