@@ -93,7 +93,7 @@ const ChatbotPage = () => {
     // 2) Gọi server để lấy phản hồi từ Gemini
     try {
       // lazy-import để tránh vòng phụ thuộc khi chưa có file
-      const { postChatMessage } = await import("../services/api.js");
+      const { postChatMessage } = await import("../services/apichat.js");
 
       const resp = await postChatMessage(trimmed, history);
 
