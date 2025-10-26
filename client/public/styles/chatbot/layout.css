@@ -1,0 +1,86 @@
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  /* Ensure root fills viewport so children using 100% or 100vh behave predictably */
+  height: 100%;
+  box-sizing: border-box;
+}
+
+main {
+  width: auto;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.chatbot-bg {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.chatbot-bg__overlay {
+  position: absolute;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+}
+
+.chatbot-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  color: #ffffff;
+}
+
+/* Chat area layout */
+.chat {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.header-chat {
+  flex: 0 0 auto;
+  height: 64px;
+}
+
+.chat main {
+  flex: 1 1 auto;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+.chat main.empty {
+  justify-content: center;
+  align-items: center;
+}
+
+.message-list-content {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 1rem;
+  min-height: 0;
+}
+
+.message-list-content.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9aa4bf;
+  flex: 0 0 auto;
+}
