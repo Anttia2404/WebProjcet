@@ -3,20 +3,28 @@ import axios from "axios";
 import bodyParser from "body-parser";
 import db from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js"
-
-
+import cors from 'cors';
+import passport from 'passport';
+import './config/passport.js';
 const app = express();
 const port = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static("public"));
+
+app.use(passport.initialize());
+
+const corsOptions = {
+    origin: 'http://localhost:5173'
+};
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
     res.send("Hello from Server!")
 })
 
 app.use('/api/auth', authRoutes);
+// app.use('/api/posts', postRoutes);
 
 app.listen(port, async () => {
     console.log(`Sever is running at port ${port}`);
