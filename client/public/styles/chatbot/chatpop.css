@@ -64,7 +64,7 @@
   display: flex;
   flex-direction: column;
   min-height: 0; /* allow child to shrink */
-  overflow: hidden; /* inner list will handle scrolling */
+  overflow: hidden;
   padding: 8px 12px 0 12px;
 }
 
