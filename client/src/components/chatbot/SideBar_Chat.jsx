@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 const SideBar_Chat = ({
   currentUser,
   conversations,
@@ -5,6 +7,7 @@ const SideBar_Chat = ({
   onSelect,
   onNewChat,
 }) => {
+  const navigate = useNavigate();
   if (!currentUser) {
     return (
       <div className="sidebar loading">
@@ -17,7 +20,18 @@ const SideBar_Chat = ({
     <div className="sidebar-chat">
       {/* Logo */}
       <div className="header-sidebar">
-        <img className="logo-robot" src="robot.png" alt="ai_robot" />
+        <img
+          className="chatlogo-ktx"
+          src="./src/assets/images/logo_ktx.png"
+          alt="logo-ktx"
+          title="Trang chủ"
+          role="button"
+          tabIndex={0}
+          onClick={() => navigate("/home")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") navigate("/home");
+          }}
+        />
       </div>
       {/* Nút thêm chat */}
       <button className="btn-new-chat" onClick={onNewChat}>

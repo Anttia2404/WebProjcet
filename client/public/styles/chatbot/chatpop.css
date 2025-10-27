@@ -1,10 +1,10 @@
-/* Floating chat pop styles */
+/* Floating chat pop styles (clean, namespaced) */
 .chatpop-root {
-  position: fixed;
-  right: 20px;
-  bottom: 24px;
-  z-index: 2000;
   font-family: inherit;
+  position: fixed !important;
+  right: 20px !important;
+  bottom: 24px !important;
+  z-index: 9999 !important;
 }
 
 .chatpop-button {
@@ -22,12 +22,12 @@
 .chatpop-panel {
   width: 380px;
   max-width: calc(100vw - 48px);
-  height: 520px;
+  height: 550px;
   display: flex;
   flex-direction: column;
   background: linear-gradient(
     180deg,
-    rgba(18, 18, 26, 0.98),
+    rgba(110, 43, 118, 0.98),
     rgba(29, 29, 39, 0.98)
   );
   border-radius: 12px;
@@ -55,43 +55,88 @@
   cursor: pointer;
 }
 
-.chatpop-inner {
+.chatpop-body-wrapper {
   display: flex;
   flex: 1 1 auto;
-  padding: 8px 12px 0 12px;
-  background: linear-gradient(180deg, rgba(8,10,16,0.25), rgba(6,8,12,0.18));
 }
-
 .chatpop-body {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* allow flex child to constrain height */
-  overflow: hidden; /* inner message list will scroll */
-  padding: 0;
+  min-height: 0; /* allow child to shrink */
+  overflow: hidden; /* inner list will handle scrolling */
+  padding: 8px 12px 0 12px;
 }
 
-/* ensure the message list inside the pop is scrollable and constrained */
-.chatpop-body .message-list-content {
+/* header actions */
+.chatpop-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.chatpop-plus {
+  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+  color: #fff;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.chatpop-list-toggle {
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* conversation list dropdown inside pop */
+.chatpop-conv-list {
+  max-height: 180px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  background: rgba(0, 0, 0, 0.04);
+}
+.chatpop-conv-item {
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.chatpop-conv-item.active {
+  background: rgba(255, 255, 255, 0.04);
+}
+.chatpop-conv-empty {
+  padding: 6px 10px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Pop-specific namespaced list (used when MessageList.containerClass is set) */
+.chatpop-message-list-content {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   padding: 12px;
   max-height: 100%;
   box-sizing: border-box;
-  /* keep space for scrollbar to avoid layout shifts */
   scrollbar-gutter: stable both-edges;
 }
-
-/* make scrollbar obvious in the pop */
-.chatpop-body .message-list-content::-webkit-scrollbar {
+.chatpop-message-list-content::-webkit-scrollbar {
   width: 10px;
 }
-.chatpop-body .message-list-content::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.08);
+.chatpop-message-list-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 8px;
 }
-.chatpop-body .message-list-content::-webkit-scrollbar-track {
+.chatpop-message-list-content::-webkit-scrollbar-track {
   background: transparent;
 }
 
@@ -116,4 +161,15 @@
     display: flex;
     justify-content: center;
   }
+}
+
+.chatpop-panel {
+  height: 525px !important;
+  max-height: 520px !important;
+  box-sizing: border-box !important;
+}
+.chatpop-message-list-content {
+  /* reserve space for header/footer: adjust numbers if your header/footer differ */
+  max-height: calc(450px - 56px - 64px) !important; /* ~400px */
+  overflow-y: auto !important;
 }
