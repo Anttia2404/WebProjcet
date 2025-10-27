@@ -8,17 +8,22 @@ import React, {
 import { useAuth } from "./AuthContext";
 import api from "../services/api";
 
+// Tạo ngữ cảnh (Context) để chia sẻ trạng thái ChatBot
 const ChatBotContext = createContext(null);
 
 export const ChatBotProvider = ({ children }) => {
-  const { token, user } = useAuth();
+  const { token, user } = useAuth(); // Khai báo các trạng thái (State) chính
 
-  const [conversations, setConversations] = useState([]);
-  const [currentConversationId, setCurrentConversationId] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [history, setHistory] = useState([]);
-  const [isCreating, setIsCreating] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [conversations, setConversations] = useState([]); // Danh sách các cuộc trò chuyện
+  const [currentConversationId, setCurrentConversationId] = useState(null); // ID của cuộc trò chuyện đang hiển thị
+  const [messages, setMessages] = useState([]); // Danh sách tin nhắn của cuộc trò chuyện hiện tại
+  const [history, setHistory] = useState([]); // Lịch sử trò chuyện (dùng cho mô hình AI)
+  const [isCreating, setIsCreating] = useState(false); // Trạng thái đang tạo cuộc trò chuyện trên server
+  const [loading, setLoading] = useState(false); // Trạng thái đang tải tin nhắn
+  /**
+   * Tải danh sách các cuộc trò chuyện đã lưu của người dùng từ server.
+   * Cập nhật danh sách conversations và tự động chọn cuộc trò chuyện đầu tiên nếu chưa có.
+   */
 
   const loadConversations = useCallback(async () => {
     if (!token) return setConversations([]);
@@ -42,14 +47,17 @@ export const ChatBotProvider = ({ children }) => {
     }
   }, [token, currentConversationId]);
 
+  // Side effect: Gọi loadConversations khi token hoặc user thay đổi (khi đăng nhập/xuất)
   useEffect(() => {
     loadConversations();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, user]);
+  /**
+   * Tải tin nhắn cho một cuộc trò chuyện cụ thể (conversationId) từ server.
+   * Cập nhật danh sách messages. Bỏ qua nếu là cuộc trò chuyện tạm thời (local-).
+   */
 
   const loadMessages = useCallback(async (conversationId) => {
-    if (!conversationId) return setMessages([]);
-    // local temp convs have ids starting with local-
+    if (!conversationId) return setMessages([]); // Bỏ qua nếu là cuộc trò chuyện tạm thời (ID bắt đầu bằng local-)
     if (String(conversationId).startsWith("local-")) {
       setMessages([]);
       return;
@@ -72,6 +80,10 @@ export const ChatBotProvider = ({ children }) => {
       setLoading(false);
     }
   }, []);
+  /**
+   * Chọn một cuộc trò chuyện mới.
+   * Đặt currentConversationId và gọi loadMessages để hiển thị tin nhắn.
+   */
 
   const selectConversation = useCallback(
     (conversationId) => {
@@ -80,6 +92,10 @@ export const ChatBotProvider = ({ children }) => {
     },
     [loadMessages]
   );
+  /**
+   * Tạo một cuộc trò chuyện tạm thời mới trên giao diện (UI).
+   * Thêm cuộc trò chuyện tạm thời (có id bắt đầu bằng 'local-') vào danh sách và đặt nó làm cuộc trò chuyện hiện tại.
+   */
 
   const newConversation = useCallback(() => {
     const tempId = `local-${Date.now()}`;
@@ -93,13 +109,16 @@ export const ChatBotProvider = ({ children }) => {
     setCurrentConversationId(tempId);
     setMessages([]);
   }, []);
+  /**
+   * Xử lý việc gửi tin nhắn từ người dùng.
+   * Gồm 5 bước chính: (1) Cập nhật UI tạm thời, (2) Tạo cuộc trò chuyện trên Server nếu cần, (3) Lưu tin nhắn User, (4) Gửi API Chatbot, (5) Cập nhật phản hồi Bot.
+   */
 
   const sendMessage = useCallback(
     async (text) => {
       if (!text || text.trim() === "") return;
-      const trimmed = text.trim();
+      const trimmed = text.trim(); // Bước 1: Optimistic UI - Thêm tin nhắn người dùng và tin nhắn "đang gõ" của bot
 
-      // optimistic UI: add user message and typing placeholder
       const userMsg = {
         id: Date.now().toString(),
         text: trimmed,
@@ -111,11 +130,11 @@ export const ChatBotProvider = ({ children }) => {
       setMessages((prev) => [...prev, typingMsg]);
 
       try {
-        // ensure conversation exists on server: if temp or null, create it now
+        // Bước 2: Đảm bảo cuộc trò chuyện tồn tại trên server (Nếu là tạm thời hoặc chưa có, tạo mới)
         let convId = currentConversationId;
         if (convId && String(convId).startsWith("local-")) {
+          // Logic tạo cuộc trò chuyện trên server từ ID tạm thời
           const tempId = convId;
-          // mark we're creating a server conversation to avoid other effects
           setIsCreating(true);
           const { createConversation } = await import(
             "../services/conversationService"
@@ -125,6 +144,7 @@ export const ChatBotProvider = ({ children }) => {
           });
           const serverConv = resp.data.conversation;
           setConversations((prev) => [
+            // Thay thế cuộc trò chuyện tạm thời bằng cuộc trò chuyện server mới tạo
             {
               id: serverConv.id,
               title: serverConv.title || "Cuộc trò chuyện",
@@ -135,7 +155,7 @@ export const ChatBotProvider = ({ children }) => {
           convId = serverConv.id;
           setCurrentConversationId(convId);
         } else if (!convId) {
-          // mark we're creating a server conversation to avoid other effects
+          // Logic tạo cuộc trò chuyện server mới hoàn toàn nếu chưa có ID nào
           setIsCreating(true);
           const { createConversation } = await import(
             "../services/conversationService"
@@ -155,15 +175,15 @@ export const ChatBotProvider = ({ children }) => {
             },
             ...prev,
           ]);
-        }
+        } // Bước 3: Lưu tin nhắn người dùng vào server
 
         const { createMessage } = await import(
           "../services/conversationService"
         );
-        await createMessage(convId, { sender: "user", content: trimmed });
+        await createMessage(convId, { sender: "user", content: trimmed }); // Bước 4: Gọi API Chatbot (AI) để lấy phản hồi
 
         const { postChatMessage } = await import("../services/apichat.js");
-        const resp = await postChatMessage(trimmed, history);
+        const resp = await postChatMessage(trimmed, history); // Bước 5: Xử lý và cập nhật phản hồi của Bot
 
         if (resp && resp.success) {
           const botText = resp.content || "(Không có phản hồi)";
@@ -172,9 +192,11 @@ export const ChatBotProvider = ({ children }) => {
             text: botText,
             from: "bot",
           };
+          // Thay thế tin nhắn "đang gõ" bằng tin nhắn thật của bot
           setMessages((prev) =>
             prev.map((m) => (m.id === typingId ? botMsg : m))
           );
+          // Lưu tin nhắn bot và lịch sử mới vào server
           await createMessage(convId, {
             sender: "bot",
             content: botText,
@@ -182,16 +204,19 @@ export const ChatBotProvider = ({ children }) => {
           });
           if (resp.updatedHistory) setHistory(resp.updatedHistory);
         } else {
+          // Xử lý lỗi từ API chatbot
           const botErr = {
             id: `bot-err-${Date.now()}`,
             text: (resp && resp.error) || "Lỗi khi lấy phản hồi từ server.",
             from: "bot",
           };
+          // Thay thế tin nhắn "đang gõ" bằng tin nhắn lỗi
           setMessages((prev) =>
             prev.map((m) => (m.id === typingId ? botErr : m))
           );
         }
       } catch (err) {
+        // Xử lý lỗi kết nối chung
         const botErr = {
           id: `bot-err-${Date.now()}`,
           text: "Không thể kết nối tới server chat.",
@@ -202,7 +227,7 @@ export const ChatBotProvider = ({ children }) => {
         );
         console.error(err);
       } finally {
-        // done with creating/sending, allow message loader to run normally
+        // Kết thúc quá trình tạo/gửi, cho phép message loader chạy lại bình thường
         setIsCreating(false);
       }
     },
@@ -225,7 +250,7 @@ export const ChatBotProvider = ({ children }) => {
         sendMessage,
       }}
     >
-      {children}
+            {children}   {" "}
     </ChatBotContext.Provider>
   );
 };

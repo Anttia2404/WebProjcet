@@ -1,6 +1,3 @@
-/* Scoped reset for chatbot only. These rules apply only inside the chatbot
-   wrapper (the component uses the `.chatbot-bg` class). This prevents a
-   global reset from affecting other pages in the app. */
 .chatbot-bg,
 .chatbot-bg * {
   margin: 0;
@@ -12,8 +9,8 @@
    globally (that was breaking other pages like signin). Use min-height so the
    component can grow if needed. */
 .chatbot-bg {
+  height: 100%;
   width: 100%;
-  min-height: 100vh;
 }
 
 /* When the Chatbot page is active we add `chatbot-full` to the body element.

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import MessageBubble from "./MessageBubble";
+import MessageBubble from "../common/ChatUI/MessageBubble";
 
 const MessageList = ({ conversationId, messages = [], currentUser = null }) => {
   // Use only the messages prop; if empty, we'll show the empty placeholder

@@ -1,10 +1,11 @@
 import db from "../config/db.js";
 
-// Create a new conversation for authenticated user
+// Tạo một cuộc trò chuyện mới cho người dùng đã xác thực
 export const createConversation = async (req, res) => {
   try {
     const userId = req.user && req.user.id;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
     const { title, system_prompt } = req.body;
     const q = `INSERT INTO conversations (title, system_prompt, user_id) VALUES ($1, $2, $3) RETURNING *`;
     const params = [title || "New Conversation", system_prompt || null, userId];
@@ -16,11 +17,12 @@ export const createConversation = async (req, res) => {
   }
 };
 
-// List conversations for current user
+// Liệt kê các cuộc trò chuyện cho người dùng hiện tại
 export const listConversations = async (req, res) => {
   try {
     const userId = req.user && req.user.id;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
     const q = `SELECT id, title, created_at, updated_at FROM conversations WHERE user_id = $1 ORDER BY updated_at DESC`;
     const result = await db.query(q, [userId]);
     res.json({ conversations: result.rows });
@@ -30,18 +32,20 @@ export const listConversations = async (req, res) => {
   }
 };
 
-// Create message in a conversation
+// Tạo tin nhắn trong cuộc trò chuyện
 export const createMessage = async (req, res) => {
   try {
     const userId = req.user && req.user.id;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
     const { conversationId } = req.params;
     const { sender, content, gemini_history_json } = req.body;
-    // verify conversation belongs to user
+
+    // xác minh cuộc trò chuyện thuộc về người dùng
     const cRes = await db.query(
       "SELECT * FROM conversations WHERE id = $1 AND user_id = $2",
       [conversationId, userId]
     );
+
     if (!cRes.rows[0])
       return res.status(404).json({ message: "Conversation not found" });
 
@@ -54,7 +58,7 @@ export const createMessage = async (req, res) => {
     ];
     const mRes = await db.query(q, params);
 
-    // update conversation updated_at
+    // cập nhật cuộc trò chuyện updated_at
     await db.query(
       "UPDATE conversations SET updated_at = NOW() WHERE id = $1",
       [conversationId]
@@ -67,13 +71,13 @@ export const createMessage = async (req, res) => {
   }
 };
 
-// List messages for a conversation
+// Liệt kê tin nhắn cho một cuộc trò chuyện
 export const listMessages = async (req, res) => {
   try {
     const userId = req.user && req.user.id;
     if (!userId) return res.status(401).json({ message: "Unauthorized" });
     const { conversationId } = req.params;
-    // verify conversation belongs to user
+    // xác minh cuộc trò chuyện thuộc về người dùng
     const cRes = await db.query(
       "SELECT * FROM conversations WHERE id = $1 AND user_id = $2",
       [conversationId, userId]

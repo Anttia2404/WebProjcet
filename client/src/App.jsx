@@ -5,6 +5,7 @@ import { ChatBotProvider } from "./context/ChatBotContext";
 import AuthPage from "./pages/AuthPage.jsx";
 import AuthCallback from "./pages/AuthCallback.jsx";
 import ChatbotPage from "./pages/ChatbotPage";
+import ChatPop from "./components/chatbot/ChatPop";
 // Import các trang khác của bạn
 // import HomePage from './pages/HomePage.jsx';
 // import ForumPage from './pages/ForumPage.jsx';
@@ -54,6 +55,8 @@ function App() {
             {/* Mặc định chuyển về /home */}
             <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
+          {/* Floating chat pop available when ChatBotProvider is mounted */}
+          <ChatPop />
         </ChatBotProvider>
       </AuthProvider>
     </BrowserRouter>
