@@ -61,7 +61,8 @@ const AuthPage = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="auth-form">
+        <div className='auth-form-container'>
+            <form onSubmit={handleSubmit} className="auth-form">
             <h2>{isRegistering ? 'Đăng Ký' : 'Đăng Nhập'}</h2>
             <div className='container'>
                 <div className='container-login'>
@@ -137,6 +138,7 @@ const AuthPage = () => {
                 {isRegistering ? 'Đã có tài khoản?  Đăng nhập' : 'Chưa có tài khoản?  Đăng ký'}
             </a>
         </form>
+        </div>
     );
 };
 

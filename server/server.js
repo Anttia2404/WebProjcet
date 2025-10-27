@@ -6,6 +6,8 @@ import authRoutes from "./routes/auth.routes.js"
 import cors from 'cors';
 import passport from 'passport';
 import './config/passport.js';
+import postRoutes from './routes/post.routes.js';
+import itemRoutes from './routes/item.routes.js';
 const app = express();
 const port = 3000;
 app.use(express.json());
@@ -24,7 +26,8 @@ app.get("/", (req, res) => {
 })
 
 app.use('/api/auth', authRoutes);
-// app.use('/api/posts', postRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/items', itemRoutes);
 
 app.listen(port, async () => {
     console.log(`Sever is running at port ${port}`);

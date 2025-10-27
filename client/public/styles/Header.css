@@ -1,0 +1,62 @@
+/* File: client/src/components/layout/Header.css */
+
+.header {
+    background-color: hsl(228, 56%, 26%);
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+    background-image: url("../../src/assets/images/bg-desktop.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: sticky; 
+    top: 0;           
+    z-index: 1000;   
+    width: 100%; 
+}
+
+.header-logo {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.header-user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 700;
+}
+
+.header-user-info span {
+    color: white;
+}
+
+.header-logout-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s; 
+    font-weight: 600;
+}
+
+.header-logout-button:hover {
+    background-color: #c82333; 
+}
+
+
+span {
+    color: rgb(81, 81, 221);
+}
+
+.header-text {
+    height: 60px;
+    width: auto;
+    padding-left: 10rem;
+}
