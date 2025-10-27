@@ -8,6 +8,7 @@ import cors from "cors";
 import passport from "passport";
 import "./config/passport.js";
 import chatRoutes from "./routes/chat.routes.js";
+import conversationRoutes from "./routes/conversation.routes.js";
 const app = express();
 const port = 3000;
 app.use(express.json());
@@ -29,6 +30,7 @@ app.use("/api/auth", authRoutes);
 // app.use('/api/posts', postRoutes);
 
 app.use("/api", chatRoutes);
+app.use("/api/conversations", conversationRoutes);
 
 app.listen(port, async () => {
   console.log(`Sever is running at port ${port}`);

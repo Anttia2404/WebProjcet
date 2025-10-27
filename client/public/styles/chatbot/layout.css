@@ -1,18 +1,35 @@
-html,
-body,
-#root {
+/* Scoped reset for chatbot only. These rules apply only inside the chatbot
+   wrapper (the component uses the `.chatbot-bg` class). This prevents a
+   global reset from affecting other pages in the app. */
+.chatbot-bg,
+.chatbot-bg * {
   margin: 0;
   padding: 0;
-  /* Ensure root fills viewport so children using 100% or 100vh behave predictably */
-  height: 100%;
   box-sizing: border-box;
+}
+
+/* Ensure the chatbot wrapper fills the viewport but do NOT set html/body/#root
+   globally (that was breaking other pages like signin). Use min-height so the
+   component can grow if needed. */
+.chatbot-bg {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* When the Chatbot page is active we add `chatbot-full` to the body element.
+   This selector provides the full-page sizing only for that route and
+   prevents the signin or other pages from inheriting global height rules. */
+body.chatbot-full,
+body.chatbot-full #root {
+  width: 100%;
+  height: 100%;
 }
 
 main {
   width: auto;
 }
 
-.container {
+.container-chat {
   display: flex;
   width: 100%;
   height: 100%;
@@ -83,4 +100,14 @@ main {
   justify-content: center;
   color: #9aa4bf;
   flex: 0 0 auto;
+}
+
+.text-title-chatbot {
+  font-size: 30px;
+  color: blueviolet;
+  font-family: "Courier New", Courier, monospace;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 20px;
+  margin-right: 15%;
 }

@@ -1,6 +1,10 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { createUser, findUserByEmail } from "../models/user.model.js";
+import {
+  createUser,
+  findUserByEmail,
+  findUserById,
+} from "../models/user.model.js";
 
 const SALT_ROUNDS = 10;
 
@@ -14,7 +18,7 @@ export const registerUser = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = createUser(email, hashedPassword, fullName);
+    const newUser = await createUser(email, hashedPassword, fullName);
     res.status(201).json({
       message: "Tao tai khoan thanh cong",
       user: newUser,
@@ -67,6 +71,21 @@ export const loginUser = async (req, res) => {
   } catch (err) {
     console.error("Loi controller dang nhap", err);
     res.status(500).json({ message: "Loi server" });
+  }
+};
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    const userId = req.user && req.user.id;
+    if (!userId) return res.status(401).json({ message: "Unauthorized" });
+    const user = await findUserById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    // hide sensitive fields
+    delete user.password_hash;
+    res.json({ user });
+  } catch (err) {
+    console.error("Error fetching current user:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };
 

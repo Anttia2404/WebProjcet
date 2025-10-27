@@ -1,10 +1,12 @@
 import express from "express";
 import passport from "passport";
+import authMiddleware from "../middleware/authMiddleware.js";
 import {
   registerUser,
   loginUser,
   googleCallback,
   facebookCallback,
+  getCurrentUser,
 } from "../controllers/authController.js";
 
 const router = express.Router();
@@ -43,5 +45,7 @@ router.get(
   }),
   facebookCallback
 );
+
+router.get("/me", authMiddleware, getCurrentUser);
 
 export default router;
