@@ -1,20 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 1. Style TĨNH: Sử dụng đường dẫn /styles/ (từ thư mục public) -->
+    <!-- Variables (global tokens) -->
+    <link rel="stylesheet" href="/styles/_variables.css" />
+    <link rel="stylesheet" href="/styles/chatbot/layout.css" />
+    <link rel="stylesheet" href="/styles/chatbot/sidebarchat.css" />
+    <link rel="stylesheet" href="/styles/chatbot/messages.css" />
+    <link rel="stylesheet" href="/styles/chatbot/input.css" />
+    <link rel="stylesheet" href="/styles/chatbot/chatpop.css" />
+    <link rel="stylesheet" href="/styles/chatbot/suggestions.css" />
+    <!-- Global main (site-wide) last so it can override if necessary -->
+    <link rel="stylesheet" href="/styles/main.css" />
+
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single:wght@100..900&family=Coiny&family=Sono:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
       rel="stylesheet"
     />
     <title>KTX Khu B</title>
-    
-    
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/index.jsx"></script>
   </body>
 </html>
-

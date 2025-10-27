@@ -1,99 +1,96 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import AuthPage from './pages/AuthPage.jsx';
-import AuthCallback from './pages/AuthCallback.jsx';
-import MainLayout from './components/layout/MainLayout.jsx';
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ChatBotProvider } from "./context/ChatBotContext";
+import AuthPage from "./pages/AuthPage.jsx";
+import AuthCallback from "./pages/AuthCallback.jsx";
+import ChatbotPage from "./pages/ChatbotPage";
+import ChatPop from "./components/chatbot/ChatPop";
+import MainLayout from "./components/layout/MainLayout.jsx";
 // Import các trang khác
-import ForumPage from './pages/ForumPage.jsx';
-import MarketplacePage from './pages/MarketplacePage.jsx'; // <-- THÊM IMPORT NÀY
+import ForumPage from "./pages/ForumPage.jsx";
+import MarketplacePage from "./pages/MarketplacePage.jsx";
 
 // (Component HomePage ví dụ)
 const HomePage = () => {
-    return (
-        <div>
-            <p>Đây là nội dung chính của trang chủ.</p>
-        </div>
-    );
+  const { user, logout } = useAuth();
+  return (
+    <div>
+      <h1>Chào mừng, {user?.fullName || user?.email}!</h1>
+      <div style={{ display: "flex", gap: 10 }}>
+        <a href="/chat">
+          <button className="btn">Mở Chatbot</button>
+        </a>
+        <button onClick={logout}>Đăng xuất</button>
+      </div>
+    </div>
+  );
 };
-
 // (Component ProtectedRoute giữ nguyên)
 const ProtectedRoute = ({ children }) => {
-    const { token } = useAuth();
-    if (!token) {
-        return <Navigate to="/login" replace />;
-    }
-    return children;
+  const { token } = useAuth();
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
 };
 
 // (Component LayoutWrapper giữ nguyên)
 const LayoutWrapper = ({ children }) => {
-    return (
-        <MainLayout>
-            {children}
-        </MainLayout>
-    );
+  return <MainLayout>{children}</MainLayout>;
 };
 
 function App() {
-    return (
-        <BrowserRouter>
-            <AuthProvider>
-                <Routes>
-                    {/* Route công khai */}
-                    <Route path="/login" element={<AuthPage />} />
-                    <Route path="/auth/callback" element={<AuthCallback />} />
-
-                    {/* Route được bảo vệ */}
-                    <Route
-                        path="/home"
-                        element={
-                            <ProtectedRoute>
-                                <LayoutWrapper>
-                                    <HomePage />
-                                </LayoutWrapper>
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/forum"
-                        element={
-                            <ProtectedRoute>
-                                <LayoutWrapper>
-                                    <ForumPage />
-                                </LayoutWrapper>
-                            </ProtectedRoute>
-                        }
-                    />
-                     {/* --- THÊM ROUTE MARKETPLACE --- */}
-                     <Route
-                        path="/marketplace"
-                        element={
-                            <ProtectedRoute>
-                                <LayoutWrapper>
-                                    <MarketplacePage />
-                                </LayoutWrapper>
-                            </ProtectedRoute>
-                        }
-                    />
-                    {/* --- KẾT THÚC ROUTE MARKETPLACE --- */}
-
-
-                    {/* (Thêm các route cần layout khác vào đây) */}
-
-
-                    {/* Mặc định chuyển về /home nếu đã đăng nhập */}
-                     <Route path="*" element={
-                         <ProtectedRoute>
-                             <Navigate to="/home" replace />
-                         </ProtectedRoute>
-                     } />
-
-                </Routes>
-            </AuthProvider>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <ChatBotProvider>
+          <Routes>
+            {/* Route công khai */}
+            <Route path="/login" element={<AuthPage />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/chat" element={<ChatbotPage />} />
+            {/* Route được bảo vệ */}
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <LayoutWrapper>
+                    <HomePage />
+                  </LayoutWrapper>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/forum"
+              element={
+                <ProtectedRoute>
+                  <LayoutWrapper>
+                    <ForumPage />
+                  </LayoutWrapper>
+                </ProtectedRoute>
+              }
+            />
+            {/* --- THÊM ROUTE MARKETPLACE --- */}
+            <Route
+              path="/marketplace"
+              element={
+                <ProtectedRoute>
+                  <LayoutWrapper>
+                    <MarketplacePage />
+                  </LayoutWrapper>
+                </ProtectedRoute>
+              }
+            />
+            {/* --- KẾT THÚC ROUTE MARKETPLACE --- */}
+            {/* Mặc định chuyển về /home */}
+            <Route path="*" element={<Navigate to="/home" replace />} />
+          </Routes>
+          {/* Floating chat pop available when ChatBotProvider is mounted */}
+          <ChatPop />
+        </ChatBotProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
-
 export default App;
-

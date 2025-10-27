@@ -1,0 +1,130 @@
+/* Sidebar specific styles */
+.sidebar-chat {
+  width: 15%;
+  min-height: 100vh;
+  background-color: #0b0310;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-robot {
+  width: 70px;
+  height: 60px;
+  margin: auto;
+}
+
+.header-sidebar {
+  display: flex;
+  height: 100px;
+}
+
+.btn-new-chat {
+  display: flex;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease-in-out !important;
+  border: 0;
+  background-image: linear-gradient(
+    270deg,
+    #6916e5,
+    #3f0346,
+    #a80ae1
+  ) !important;
+  background-size: 200% 100% !important;
+  width: 170px;
+  min-width: 115px;
+  height: 44px !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  border-radius: 5px !important;
+  font-size: 14px;
+}
+
+.btn-new-chat span {
+  margin-right: 2%;
+}
+
+.text-history {
+  margin-top: 35%;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-transform: uppercase;
+}
+
+.conversation-list::-webkit-scrollbar {
+  width: 8px;
+}
+.conversation-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+.conversation-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 50vh;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.conv-item {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: rgb(31, 41, 55);
+  transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
+  font-family: "Sono", monospace;
+  font-size: small;
+}
+.conv-item:hover {
+  background-color: rgb(55, 65, 81);
+}
+.conv-item-active {
+  background-color: rgb(147, 51, 234);
+  font-weight: 500;
+}
+.conv-item-active:hover {
+  background-color: rgb(147, 51, 234);
+}
+.conv-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.conv-timestamp {
+  font-size: 0.75rem;
+  color: rgb(156, 163, 175);
+  margin-top: 0.125rem;
+}
+
+.avatar-user {
+  display: flex;
+}
+.avatar-user img {
+  width: 50px;
+  height: auto;
+  margin-right: 2%;
+}
+.text-user {
+  font-size: 15px;
+  color: #6916e5;
+  margin-top: 10px;
+}
+.text-user span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.footer-sidebar {
+  flex-shrink: 0;
+  padding: 1rem 0;
+  margin-top: auto;
+}
