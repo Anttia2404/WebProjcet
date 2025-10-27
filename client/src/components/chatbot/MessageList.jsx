@@ -1,16 +1,34 @@
 import React, { useRef, useEffect } from "react";
 import MessageBubble from "../common/ChatUI/MessageBubble";
 
-const MessageList = ({ conversationId, messages = [], currentUser = null }) => {
+// containerClass: allows callers (e.g. ChatPop) to namespace the container
+// so the pop can use its own scrolling rules instead of the page-wide ones.
+const MessageList = ({
+  conversationId,
+  messages = [],
+  currentUser = null,
+  containerClass = "message-list-content",
+}) => {
   // Use only the messages prop; if empty, we'll show the empty placeholder
   const msgs = messages;
 
   // Ref để tự động cuộn xuống tin nhắn mới nhất
   const endOfMessagesRef = useRef(null);
+  // Ref tới container chứa danh sách tin nhắn — ta sẽ scroll container này
+  const containerRef = useRef(null);
 
-  // Hàm cuộn xuống dưới
+  // Hàm cuộn xuống dưới — scroll nội bộ của container để không ảnh hưởng viewport
   const scrollToBottom = () => {
-    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = containerRef.current;
+    if (container) {
+      try {
+        container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+      } catch (e) {
+        container.scrollTop = container.scrollHeight;
+      }
+    } else {
+      endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
@@ -19,7 +37,7 @@ const MessageList = ({ conversationId, messages = [], currentUser = null }) => {
   }, [msgs]);
   if (!msgs || msgs.length === 0) {
     return (
-      <div className="message-list-content empty">
+      <div className={`${containerClass} empty`} ref={containerRef}>
         <div className="empty-placeholder">
           <h1>Chào mừng bạn đến kênh chat FA 🙌</h1>
           <p> Bạn muốn hỏi gì?☺️☺️</p>
@@ -30,7 +48,7 @@ const MessageList = ({ conversationId, messages = [], currentUser = null }) => {
   }
 
   return (
-    <div className="message-list-content">
+    <div className={containerClass} ref={containerRef}>
       {msgs.map((message) => (
         <MessageBubble
           key={message.id}

@@ -8,10 +8,14 @@
   flex-direction: column;
 }
 
-.logo-robot {
+.chatlogo-ktx {
   width: 70px;
   height: 60px;
   margin: auto;
+  border-style: hidden;
+  border-radius: 99%;
+  background-color: #312236;
+  cursor: pointer;
 }
 
 .header-sidebar {
