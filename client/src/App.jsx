@@ -6,10 +6,12 @@ import AuthPage from "./pages/AuthPage.jsx";
 import AuthCallback from "./pages/AuthCallback.jsx";
 import ChatbotPage from "./pages/ChatbotPage";
 import ChatPop from "./components/chatbot/ChatPop";
-// Import các trang khác của bạn
-// import HomePage from './pages/HomePage.jsx';
-// import ForumPage from './pages/ForumPage.jsx';
+import MainLayout from "./components/layout/MainLayout.jsx";
+// Import các trang khác
+import ForumPage from "./pages/ForumPage.jsx";
+import MarketplacePage from "./pages/MarketplacePage.jsx";
 
+// (Component HomePage ví dụ)
 const HomePage = () => {
   const { user, logout } = useAuth();
   return (
@@ -24,13 +26,18 @@ const HomePage = () => {
     </div>
   );
 };
-
+// (Component ProtectedRoute giữ nguyên)
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
   if (!token) {
     return <Navigate to="/login" replace />;
   }
   return children;
+};
+
+// (Component LayoutWrapper giữ nguyên)
+const LayoutWrapper = ({ children }) => {
+  return <MainLayout>{children}</MainLayout>;
 };
 
 function App() {
@@ -48,10 +55,34 @@ function App() {
               path="/home"
               element={
                 <ProtectedRoute>
-                  <HomePage />
+                  <LayoutWrapper>
+                    <HomePage />
+                  </LayoutWrapper>
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/forum"
+              element={
+                <ProtectedRoute>
+                  <LayoutWrapper>
+                    <ForumPage />
+                  </LayoutWrapper>
+                </ProtectedRoute>
+              }
+            />
+            {/* --- THÊM ROUTE MARKETPLACE --- */}
+            <Route
+              path="/marketplace"
+              element={
+                <ProtectedRoute>
+                  <LayoutWrapper>
+                    <MarketplacePage />
+                  </LayoutWrapper>
+                </ProtectedRoute>
+              }
+            />
+            {/* --- KẾT THÚC ROUTE MARKETPLACE --- */}
             {/* Mặc định chuyển về /home */}
             <Route path="*" element={<Navigate to="/home" replace />} />
           </Routes>
@@ -62,5 +93,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;

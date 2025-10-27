@@ -9,6 +9,9 @@ import passport from "passport";
 import "./config/passport.js";
 import chatRoutes from "./routes/chat.routes.js";
 import conversationRoutes from "./routes/conversation.routes.js";
+import postRoutes from "./routes/post.routes.js";
+import itemRoutes from "./routes/item.routes.js";
+
 const app = express();
 const port = 3000;
 app.use(express.json());
@@ -27,7 +30,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
-// app.use('/api/posts', postRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/items", itemRoutes);
 
 app.use("/api", chatRoutes);
 app.use("/api/conversations", conversationRoutes);

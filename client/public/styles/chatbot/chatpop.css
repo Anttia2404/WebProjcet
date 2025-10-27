@@ -55,10 +55,44 @@
   cursor: pointer;
 }
 
+.chatpop-inner {
+  display: flex;
+  flex: 1 1 auto;
+  padding: 8px 12px 0 12px;
+  background: linear-gradient(180deg, rgba(8,10,16,0.25), rgba(6,8,12,0.18));
+}
+
 .chatpop-body {
   flex: 1 1 auto;
-  overflow: auto;
-  padding: 5px 5px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* allow flex child to constrain height */
+  overflow: hidden; /* inner message list will scroll */
+  padding: 0;
+}
+
+/* ensure the message list inside the pop is scrollable and constrained */
+.chatpop-body .message-list-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+  max-height: 100%;
+  box-sizing: border-box;
+  /* keep space for scrollbar to avoid layout shifts */
+  scrollbar-gutter: stable both-edges;
+}
+
+/* make scrollbar obvious in the pop */
+.chatpop-body .message-list-content::-webkit-scrollbar {
+  width: 10px;
+}
+.chatpop-body .message-list-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+}
+.chatpop-body .message-list-content::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .chatpop-footer {

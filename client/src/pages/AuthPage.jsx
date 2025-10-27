@@ -95,102 +95,108 @@ const AuthPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
-      <h2>{isRegistering ? "Đăng Ký" : "Đăng Nhập"}</h2>
-      <div className="container">
-        <div className="container-login">
-          {isRegistering && (
+    <div className="auth-form-container">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h2>{isRegistering ? "Đăng Ký" : "Đăng Nhập"}</h2>
+        <div className="container">
+          <div className="container-login">
+            {isRegistering && (
+              <input
+                type="text"
+                placeholder="Họ và tên"
+                className="auth-input"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            )}
             <input
-              type="text"
-              placeholder="Họ và tên"
+              type="email"
+              placeholder="Email"
               className="auth-input"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
-          )}
-          <input
-            type="email"
-            placeholder="Email"
-            className="auth-input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <div className="password-wrapper">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Mật khẩu"
-              className="auth-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="password-toggle-icon"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-
-          {isRegistering && (
             <div className="password-wrapper">
               <input
-                type={showConfirmPassword ? "text" : "password"}
-                placeholder="Xác nhận mật khẩu"
+                type={showPassword ? "text" : "password"}
+                placeholder="Mật khẩu"
                 className="auth-input"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <button
                 type="button"
-                onClick={toggleConfirmPasswordVisibility}
+                onClick={togglePasswordVisibility}
                 className="password-toggle-icon"
               >
-                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
-          )}
 
-          {error && <p className="auth-error">{error}</p>}
+            {isRegistering && (
+              <div className="password-wrapper">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Xác nhận mật khẩu"
+                  className="auth-input"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={toggleConfirmPasswordVisibility}
+                  className="password-toggle-icon"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
+                </button>
+              </div>
+            )}
 
-          <button type="submit" className="auth-button">
-            {isRegistering ? "Đăng Ký" : "Đăng Nhập"}
-          </button>
+            {error && <p className="auth-error">{error}</p>}
+
+            <button type="submit" className="auth-button">
+              {isRegistering ? "Đăng Ký" : "Đăng Nhập"}
+            </button>
+          </div>
+
+          <div className="oauth-buttons">
+            <button
+              type="button"
+              className="oauth-button google"
+              onClick={() => handleOAuthLogin("google")}
+            >
+              <GoogleIcon />
+              <span>Đăng nhập với Google</span>
+            </button>
+            <button
+              type="button"
+              className="oauth-button facebook"
+              onClick={() => handleOAuthLogin("facebook")}
+            >
+              <FacebookIcon />
+              <span>Đăng nhập với Facebook</span>
+            </button>
+          </div>
         </div>
-
-        <div className="oauth-buttons">
-          <button
-            type="button"
-            className="oauth-button google"
-            onClick={() => handleOAuthLogin("google")}
-          >
-            <GoogleIcon />
-            <span>Đăng nhập với Google</span>
-          </button>
-          <button
-            type="button"
-            className="oauth-button facebook"
-            onClick={() => handleOAuthLogin("facebook")}
-          >
-            <FacebookIcon />
-            <span>Đăng nhập với Facebook</span>
-          </button>
-        </div>
-      </div>
-      <a
-        href="#"
-        className="auth-toggle"
-        onClick={() => setIsRegistering(!isRegistering)}
-      >
-        {isRegistering
-          ? "Đã có tài khoản?  Đăng nhập"
-          : "Chưa có tài khoản?  Đăng ký"}
-      </a>
-    </form>
+        <a
+          href="#"
+          className="auth-toggle"
+          onClick={() => setIsRegistering(!isRegistering)}
+        >
+          {isRegistering
+            ? "Đã có tài khoản?  Đăng nhập"
+            : "Chưa có tài khoản?  Đăng ký"}
+        </a>
+      </form>
+    </div>
   );
 };
 

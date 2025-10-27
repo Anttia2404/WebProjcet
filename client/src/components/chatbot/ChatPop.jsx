@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useChatBot } from "../../context/ChatBotContext";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
-import DarkDottedBackground from "./DarkDottedBackground";
+// Use a compact inner wrapper instead of the full-page DarkDottedBackground
 
 const ChatPop = ({ compact = true }) => {
   const { currentConversationId, messages, newConversation, sendMessage } =
@@ -47,12 +47,12 @@ const ChatPop = ({ compact = true }) => {
               ✕
             </button>
           </div>
-          <DarkDottedBackground>
+          <div className="chatpop-inner">
             <div className="chatpop-body">
               {/* MessageList knows how to render empty placeholder */}
               <MessageList messages={messages} />
             </div>
-          </DarkDottedBackground>
+          </div>
 
           <div className="chatpop-footer">
             <MessageInput onSend={handleSend} />

@@ -13,15 +13,6 @@
   width: 100%;
 }
 
-/* When the Chatbot page is active we add `chatbot-full` to the body element.
-   This selector provides the full-page sizing only for that route and
-   prevents the signin or other pages from inheriting global height rules. */
-body.chatbot-full,
-body.chatbot-full #root {
-  width: 100%;
-  height: 100%;
-}
-
 main {
   width: auto;
 }
